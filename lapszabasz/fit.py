@@ -1,11 +1,10 @@
-import numpy as np
-import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+import matplotlib.pyplot as plt
+import numpy as np
 import svgwrite
 from IPython.display import SVG, display
 
 import lapszabasz.sorting as ls
-
 
 
 class FitAlgorithms:
