@@ -1,6 +1,16 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+import svgwrite
+from IPython.display import SVG, display
+
+import lapszabasz.sorting as ls
+
+
+
 class FitAlgorithms:
   def __init__(self, rectangles):
-    self.sorting = SortingByRectangles(rectangles)
+    self.sorting = ls.SortingByRectangles(rectangles)
 
   #Sávokba rendezi téglalapok egy halmazát Next Fit Decreasing szerint.
   #(Addig rakja az elemeket a sorok következő sávba, amig lehet.
