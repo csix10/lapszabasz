@@ -1,3 +1,12 @@
+import numpy as np
+from collections import Counter
+from tabulate import tabulate
+
+import lapszabasz.random as lr
+import lapszabasz.fit as lf
+import lapszabasz.step_by_step as lss
+
+
 def step_by_step_selection(step_by_step):
   selection = {
       "vertical_bar": step_by_step.vertical_bar,
@@ -41,8 +50,8 @@ class Statistics:
     stat = []
     names = []
     for i in range(0, self.sample_number):
-      rectangles = generate_random_size(40, 0, 0.5, 10)
-      step_by_step = StepByStepAlgorithms(rectangles)
+      rectangles = lr.RandomRectangles.generate_random_size(40, 0, 0.5, 10)
+      step_by_step = lss.StepByStepAlgorithms(rectangles)
       x = 0
       for sett_1 in self.setting_sorting_rec:
         for sett_2 in self.setting_sorting_rem:
@@ -64,9 +73,9 @@ class Statistics:
     stat = []
     names = []
     for i in range(0, self.sample_number):
-      rectangles = generate_random_size(40, 0, 0.5, 10)
-      fit = FitAlgorithms(rectangles)
-      step_by_step = StepByStepAlgorithms(rectangles)
+      rectangles = lr.RandomRectangles.generate_random_size(40, 0, 0.5, 10)
+      fit = lf.FitAlgorithms(rectangles)
+      step_by_step = lss.StepByStepAlgorithms(rectangles)
       x = 0
       for sett_1 in self.setting_sorting_rec:
         for sett_2 in self.setting_sorting_rem:
@@ -96,8 +105,8 @@ class Statistics:
     for i in range(0, self.sample_number):
       if i%100 == 0:
         print(i)
-      rectangles = generate_random_size(100, 0, 0.5, 10)
-      fit = FitAlgorithms(rectangles)
+      rectangles = lr.RandomRectangles.generate_random_size(100, 0, 0.5, 10)
+      fit = lf.FitAlgorithms(rectangles)
       x = 0
 
       for sett in self.setting_fit:

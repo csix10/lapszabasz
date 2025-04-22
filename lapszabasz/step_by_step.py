@@ -1,7 +1,12 @@
+import matplotlib.patches as patches
+import matplotlib.pyplot as plt
+import copy
+
+import lapszabasz.sorting as ls
 
 class StepByStepAlgorithms:
   def __init__(self, rectangles):
-    self.sorting = SortingByRectangles(rectangles)
+    self.sorting = ls.SortingByRectangles(rectangles)
 
     self.selection = {
       "vertical_bar": self.vertical_bar,
