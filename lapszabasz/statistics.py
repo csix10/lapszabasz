@@ -2,7 +2,7 @@ import numpy as np
 from collections import Counter
 from tabulate import tabulate
 
-import lapszabasz.random as lr
+import lapszabasz.randomrec as lr
 import lapszabasz.fit as lf
 import lapszabasz.step_by_step as lss
 

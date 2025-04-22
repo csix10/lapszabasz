@@ -4,6 +4,7 @@ import copy
 
 import lapszabasz.sorting as ls
 
+
 class StepByStepAlgorithms:
   def __init__(self, rectangles):
     self.sorting = ls.SortingByRectangles(rectangles)

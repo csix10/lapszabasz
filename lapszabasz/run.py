@@ -1,5 +1,6 @@
 import lapszabasz.statistics as ls
 
+
 def run_stat_1(a, b):
     stat = ls.Statistics(10)
     stat.step_by_step_stat("vertical_bar")
