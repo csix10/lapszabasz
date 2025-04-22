@@ -247,7 +247,7 @@ class FitAlgorithms:
         ("FFDL: First Fit Decreasing Lane", "FFD"),
         ("BFDL: Best Fit Decreasing Lane", "BFD"),
       ],
-      description='Upload site:'
+      description='Algoritmus: '
     )
 
     interact(

@@ -266,22 +266,39 @@ class StepByStepAlgorithms:
       plt.show()
 
   def interactive_figure(self):
-
-    upload_site_dropdown = widgets.Dropdown(
+    upload_site_algorthm = widgets.Dropdown(
       options=[
-        ("1: Legkisebb területű darabra helyezi le", 1),
-        ("2: Legelső táblára helyezi le", 2),
-        ("21: Legelső táblán a legkisebb területűre helyezi le", 21),
-        ("3: Legkisebb szélességű darabra", 3),
-        ("0: Nincs rendezés", 0)
+        ("Függőleges sávos (vertical_bar)", "vertical_bar"),
+        ("Vízszintes sávos (horizontal_bar)", "horizontal_bar"),
+        ("Kevert (mix)", "mix")
       ],
-      description='Upload site:'
+      description='Szabásterv típusa:'
+    )
+
+    upload_site_stay = widgets.Dropdown(
+      options=[
+        ("Legkisebb területű darabra helyezi le (1)", 1),
+        ("Legelső táblára helyezi le (2)", 2),
+        ("Legelső táblán a legkisebb területűre helyezi le (21)", 21),
+        ("Legkisebb szélességű darabra (3)", 3),
+        ("Nincs rendezés (0)", 0)
+      ],
+      description='Maradék beállítása:'
+    )
+    upload_site_rectangel = widgets.Dropdown(
+      options=[
+        ("Széllesség szerint (latitude)", "latitude"),
+        ("Magasság szerint (height)","height"),
+        ("Terület szerint (area)", "area"),
+        ("Oldal arány szerint: (aspect_ratio)", "aspect_ratio")
+      ],
+      description='Szabásjegyzék rendezése:'
     )
 
     interact(
       self.plot,
-      algorithm=["vertical_bar", "horizontal_bar", "mix"],
-      upload_site=upload_site_dropdown,
-      sorting_rectangles=["latitude", "area", "height", "aspect_ratio"],
+      algorithm=upload_site_algorthm,
+      upload_site=upload_site_stay,
+      sorting_rectangles= upload_site_rectangel,
       aspect_ratio=(0, 1, 0.1)
     )
