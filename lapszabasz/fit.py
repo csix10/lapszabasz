@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import svgwrite
 from IPython.display import SVG, display
+from ipywidgets import interact, widgets
 
 import lapszabasz.sorting as ls
 
@@ -237,3 +238,19 @@ class FitAlgorithms:
 
         # SVG megjelenítése Colabban
         display(SVG(svg_filename))
+
+  def interactive_figure(self):
+
+    upload_site_dropdown = widgets.Dropdown(
+      options=[
+        ("NFDL: Next Fit Decreasing Lane", "NFD"),
+        ("FFDL: First Fit Decreasing Lane", "FFD"),
+        ("BFDL: Best Fit Decreasing Lane", "BFD"),
+      ],
+      description='Upload site:'
+    )
+
+    interact(
+      self.plot,
+      algorithm=upload_site_dropdown,
+    )
