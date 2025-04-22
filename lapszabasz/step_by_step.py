@@ -1,6 +1,7 @@
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import copy
+from ipywidgets import interact, widgets
 
 import lapszabasz.sorting as ls
 
@@ -263,3 +264,24 @@ class StepByStepAlgorithms:
 
       ax.set_aspect('equal', adjustable='box')
       plt.show()
+
+  def interactive_figure(self):
+
+    upload_site_dropdown = widgets.Dropdown(
+      options=[
+        ("1: Legkisebb területű darabra helyezi le", 1),
+        ("2: Legelső táblára helyezi le", 2),
+        ("21: Legelső táblán a legkisebb területűre helyezi le", 21),
+        ("3: Legkisebb szélességű darabra", 3),
+        ("0: Nincs rendezés", 0)
+      ],
+      description='Upload site:'
+    )
+
+    interact(
+      self.plot,
+      algorithm=["vertical_bar", "horizontal_bar", "mix"],
+      upload_site=upload_site_dropdown,
+      sorting_rectangles=["latitude", "area", "height", "aspect_ratio"],
+      aspect_ratio=(0, 1, 0.1)
+    )
