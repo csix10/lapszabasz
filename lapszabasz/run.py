@@ -1,6 +1,4 @@
 import lapszabasz.statistics as ls
-import lapszabasz.step_by_step as lss
-import lapszabasz.randomrec as lr
 
 
 def run_stat_1(n):

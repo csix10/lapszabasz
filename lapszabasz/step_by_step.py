@@ -15,22 +15,22 @@ class StepByStepAlgorithms:
       "horizontal_bar": self.horizontal_bar,
       "mix": self.mix,
     }
-
-  def step_width(self, sizes, pattern, table_number): #i, rec
-    if self.i >= len(sizes):
+  #Egy lépésben elvégzi a vágást szélesség szerint
+  def step_width(self, sizes, pattern, table_number, i, rec):
+    if i >= len(sizes):
         table_number += 1
-        pattern.append([self.rec[0], self.rec[1], [0,0], table_number])
+        pattern.append([rec[0], rec[1], [0,0], table_number])
 
-        size_1 = [self.rec[0], 1-self.rec[1], [0, self.rec[1]], table_number]
-        size_2 = [1-self.rec[0], 1, [self.rec[0], 0], table_number]
+        size_1 = [rec[0], 1-rec[1], [0, rec[1]], table_number]
+        size_2 = [1-rec[0], 1, [rec[0], 0], table_number]
 
     else:
-        pattern.append([self.rec[0], self.rec[1], sizes[self.i][2], sizes[self.i][3]])
+        pattern.append([rec[0], rec[1], sizes[i][2], sizes[i][3]])
 
-        size_1 = [self.rec[0], sizes[self.i][1]-self.rec[1], [sizes[self.i][2][0], sizes[self.i][2][1]+self.rec[1]], sizes[self.i][3]]
-        size_2 = [sizes[self.i][0]-self.rec[0], sizes[self.i][1], [sizes[self.i][2][0]+self.rec[0], sizes[self.i][2][1]], sizes[self.i][3]]
+        size_1 = [rec[0], sizes[i][1]-rec[1], [sizes[i][2][0], sizes[i][2][1]+rec[1]], sizes[i][3]]
+        size_2 = [sizes[i][0]-rec[0], sizes[i][1], [sizes[i][2][0]+rec[0], sizes[i][2][1]], sizes[i][3]]
 
-        del sizes[self.i]
+        del sizes[i]
 
     if size_1[1] != 0:
       sizes.append(size_1)
@@ -42,21 +42,22 @@ class StepByStepAlgorithms:
 
     return sizes, pattern, table_number, rate
 
-  def step_height(self, sizes, pattern, table_number):
-    if self.i >= len(sizes):
+  #Egy lépésben elvégzi a vágást magasság szerint
+  def step_height(self, sizes, pattern, table_number, i, rec):
+    if i >= len(sizes):
         table_number += 1
-        pattern.append([self.rec[0], self.rec[1], [0,0], table_number])
+        pattern.append([rec[0], rec[1], [0,0], table_number])
 
-        size_1 = [1-self.rec[0], self.rec[1], [self.rec[0], 0], table_number]
-        size_2 = [1, 1-self.rec[1], [0, self.rec[1]], table_number]
+        size_1 = [1-rec[0], rec[1], [rec[0], 0], table_number]
+        size_2 = [1, 1-rec[1], [0, rec[1]], table_number]
 
     else:
-        pattern.append([self.rec[0], self.rec[1], sizes[self.i][2], sizes[self.i][3]])
+        pattern.append([rec[0], rec[1], sizes[i][2], sizes[i][3]])
 
-        size_1 = [sizes[self.i][0]-self.rec[0], self.rec[1], [sizes[self.i][2][0]+self.rec[0], sizes[self.i][2][1]], sizes[self.i][3]]
-        size_2 = [sizes[self.i][0], sizes[self.i][1]-self.rec[1], [sizes[self.i][2][0], sizes[self.i][2][1]+self.rec[1]], sizes[self.i][3]]
+        size_1 = [sizes[i][0]-rec[0], rec[1], [sizes[i][2][0]+rec[0], sizes[i][2][1]], sizes[i][3]]
+        size_2 = [sizes[i][0], sizes[i][1]-rec[1], [sizes[i][2][0], sizes[i][2][1]+rec[1]], sizes[i][3]]
 
-        del sizes[self.i]
+        del sizes[i]
 
     if size_1[0] != 0:
       sizes.append(size_1)
@@ -67,7 +68,7 @@ class StepByStepAlgorithms:
 
     return sizes, pattern, table_number, rate
 
-  #Ezt majd késöbb fogalmazom...:
+  #Függőleges sávos szabástervet generáló step by step
   # - upload=1: a legkisebb területűre darabra helyezi le a szabandó téglalapot
   # - upload=2: a legelső táblára amire még ráfér helyezi le a téglalapot
   # - upload=21: a legelső táblán amire ráfér a legkisebb területű darabra helyezi le
@@ -80,17 +81,13 @@ class StepByStepAlgorithms:
 
     rectangle = self.sorting.sort_c_aspect_ratio(sorting_rectangles,1,c)
     for rec in rectangle:
-      self.rec = rec
-
       sizes = self.sorting.step_setting(sizes, upload_site)
 
       i = 0
       while (i < len(sizes)) and ((sizes[i][0] < rec[0]) or (sizes[i][1] < rec[1])):
         i += 1
 
-      self.i = i
-
-      sizes, pattern, table_number, rate = self.step_width(sizes, pattern, table_number)
+      sizes, pattern, table_number, rate = self.step_width(sizes, pattern, table_number, i, rec)
 
     max_remnant = sorted(sizes, key=lambda x: x[0] * x[1], reverse=1)
     max_remnant_area = [[],[],[]]
@@ -100,7 +97,8 @@ class StepByStepAlgorithms:
 
     return pattern, table_number, max_remnant_area
 
-
+  #Vízszintes sávos szabástervet generáló step by step
+  # Beállítások ugyan az mint elöbb
   def horizontal_bar(self, upload_site, sorting_rectangles, c):
     sizes = [[1,1,[0,0],1]]      #[szélesség, magasság, bal alsó csúcs koordinátája, tartalmazó tábla]
     table_number = 1
@@ -108,16 +106,13 @@ class StepByStepAlgorithms:
 
     rectangle = self.sorting.sort_c_aspect_ratio(sorting_rectangles,1,c)
     for rec in rectangle:
-      self.rec = rec
-
       sizes = self.sorting.step_setting(sizes, upload_site)
 
       i = 0
       while (i < len(sizes)) and ((sizes[i][0] < rec[0]) or (sizes[i][1] < rec[1])):
         i += 1
-      self.i = i
 
-      sizes, pattern, table_number, rate = self.step_height(sizes, pattern, table_number)
+      sizes, pattern, table_number, rate = self.step_height(sizes, pattern, table_number, i, rec)
 
     max_remnant = sorted(sizes, key=lambda x: x[0] * x[1], reverse=1)
     max_remnant_area = [[],[],[]]
@@ -127,29 +122,25 @@ class StepByStepAlgorithms:
 
     return pattern, table_number, max_remnant_area
 
+  #Vegyes szabástervet generáló step by step
   def mix(self, upload_site, sorting_rectangles, c):
     sizes = [[1,1,[0,0],1]]      #[szélesség, magasság, bal alsó csúcs koordinátája, tartalmazó tábla]
     table_number = 1
     pattern = []
 
-    #rectangle = getattr(self.sorting, sorting_rectangles)(1)
     rectangle = self.sorting.sort_c_aspect_ratio(sorting_rectangles, 1, c)
     for rec in rectangle:
-      self.rec = rec
       sizes = self.sorting.step_setting(sizes, upload_site)
 
       i = 0
       while (i < len(sizes)) and ((sizes[i][0] < rec[0]) or (sizes[i][1] < rec[1])):
         i += 1
-      self.i = i
-
-      # sizes[(sizes[i][0] < rec[0]) or (sizes[i][1] < rec[1])].argmin()
 
       sizes_copy = copy.deepcopy(sizes)
       pattern_copy = copy.deepcopy(pattern)
 
-      sizes_1, pattern_1, table_number_1, rate_1 = self.step_width(sizes_copy, pattern_copy, table_number)
-      sizes_2, pattern_2, table_number_2, rate_2 = self.step_height(sizes, pattern, table_number)
+      sizes_1, pattern_1, table_number_1, rate_1 = self.step_width(sizes_copy, pattern_copy, table_number, i, rec)
+      sizes_2, pattern_2, table_number_2, rate_2 = self.step_height(sizes, pattern, table_number, i, rec)
 
       if rate_1 >= rate_2:
         sizes = sizes_1
@@ -169,9 +160,8 @@ class StepByStepAlgorithms:
 
     return pattern, table_number, max_remnant_area
 
-  #Ábrázolja step by step által létre hozott táblákat
+  #Vázlatosan ábrázolja step by step által létre hozott szabástervet
   def plot(self, algorithm, upload_site, sorting_rectangles, aspect_ratio):
-    #pattern, table_number, remnant = getattr(self, algorithm)(upload_site, sorting_rectangles, aspect_ratio)
     pattern, table_number, remnant = self.selection[algorithm](upload_site, sorting_rectangles, aspect_ratio)
     fig, ax = plt.subplots(figsize=(10, 5))
     pattern = sorted(pattern, key=lambda x: x[3])
@@ -199,6 +189,7 @@ class StepByStepAlgorithms:
     ax.set_aspect('equal', adjustable='box')
     plt.show()
 
+  #Vázlatosan ábrázolja vegyes step by step algortimus lépésenként
   def mix_step_plot(self, upload_site, sorting_rectangles):
     sizes = [[1,1,[0,0],1]]      #[szélesség, magasság, bal alsó csúcs koordinátája, tartalmazó tábla]
     table_number = 1
@@ -207,19 +198,17 @@ class StepByStepAlgorithms:
     rectangle = getattr(self.sorting, sorting_rectangles)(1)
 
     for rec in rectangle:
-      self.rec = rec
       sizes = self.sorting.step_setting(sizes, upload_site)
 
       i = 0
       while (i < len(sizes)) and ((sizes[i][0] < rec[0]) or (sizes[i][1] < rec[1])):
         i += 1
-      self.i = i
 
       sizes_copy = copy.deepcopy(sizes)
       pattern_copy = copy.deepcopy(pattern)
 
-      sizes_1, pattern_1, table_number_1, rate_1 = self.step_width(sizes_copy, pattern_copy, table_number)
-      sizes_2, pattern_2, table_number_2, rate_2 = self.step_height(sizes, pattern, table_number)
+      sizes_1, pattern_1, table_number_1, rate_1 = self.step_width(sizes_copy, pattern_copy, table_number, i, rec)
+      sizes_2, pattern_2, table_number_2, rate_2 = self.step_height(sizes, pattern, table_number, i, rec)
 
       if rate_1 >= rate_2:
         sizes = sizes_1
@@ -265,6 +254,7 @@ class StepByStepAlgorithms:
       ax.set_aspect('equal', adjustable='box')
       plt.show()
 
+  #Step by step algoritmushoz készít interaktav ábrát amin az összed beállítás megadható
   def interactive_figure(self):
     upload_site_algorthm = widgets.Dropdown(
       options=[

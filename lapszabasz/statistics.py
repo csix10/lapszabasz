@@ -31,6 +31,7 @@ class Statistics:
     self.setting_sorting_rem = (1, 2, 21, 3)
     self.setting_fit = ("NFD", "FFD", "BFD")
 
+  #Kiértékeli a statisztikai eredményeket és előkészíti a táblázat ábrázolását
   def evaluative_descriptive(self, stat, names):
     vocabulary = {
       "latitude_1": "SbS: Szab. jegy.: Szélesség, Maradék: Terület",
@@ -40,7 +41,7 @@ class Statistics:
       "height_1": "SbS: Szab. jegy.: Magasság, Maradék: Terület",
       "height_2": "SbS: Szab. jegy.: Magasság, Maradék: Tábla",
       "height_21": "SbS: Szab. jegy.: Magasság, Maradék: Tábla és terület",
-      "height_3": "SbS: Szab. jegy.: Magasság, Szélesség",
+      "height_3": "SbS: Szab. jegy.: Magasság, Maradék: Szélesség",
       "area_1": "SbS: Szab. jegy.: Terület, Maradék: Terület",
       "area_2": "SbS: Szab. jegy.: Terület, Maradék: Tábla",
       "area_21": "SbS: Szab. jegy.: Terület, Maradék: Tábla és terület",
@@ -71,12 +72,14 @@ class Statistics:
 
     return result_sorted_text
 
+  #Létrehoz egy terminálos táblázatot
   def table_generator_tab(self, stat, names):
     result_sorted_text = self.evaluative_descriptive(stat, names)
 
     headers = ["Sorszám", "Algoritmus beállítása", "DB", "%"]
     print(tabulate(result_sorted_text, headers=headers, tablefmt="grid"))
 
+  #Léterhoz egy táblázatot képként
   def table_generator_plt(self, stat, names):
     result_sorted_text = self.evaluative_descriptive(stat, names)
 
@@ -100,6 +103,7 @@ class Statistics:
     plt.title("Algoritmus statisztika", fontsize=14, pad=20)
     plt.show()
 
+  #Step by Step algoritmusok különboző beállításait teszteli
   def step_by_step_stat(self, algorithm):
     sorted_sample = np.zeros((self.sample_number, 16, 5))
     sample = np.zeros((self.sample_number, 16, 5))
@@ -126,6 +130,7 @@ class Statistics:
     self.table_generator_tab(stat, names)
     self.table_generator_plt(stat, names)
 
+  #Függőleges sávos szab. tervet adó algoritmusokat teszteli
   def vertical_bar(self):
     sorted_sample = np.zeros((self.sample_number, 19, 5))
     sample = np.zeros((self.sample_number, 19, 5))
@@ -159,6 +164,7 @@ class Statistics:
     self.table_generator_tab(stat, names)
     self.table_generator_plt(stat, names)
 
+  #Fit algoritmusokat teszteli
   def fit_stat(self):
     sorted_sample = np.zeros((self.sample_number, 3, 5))
     sample = np.zeros((self.sample_number, 3, 5))
