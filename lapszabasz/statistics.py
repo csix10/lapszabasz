@@ -79,13 +79,13 @@ class Statistics:
     headers = ["Sorszám", "Algoritmus beállítása", "DB", "%"]
     print(tabulate(result_sorted_text, headers=headers, tablefmt="grid"))
 
-  #Léterhoz egy táblázatot képként
+  #Létrehoz egy táblázatot képként
   def table_generator_plt(self, stat, names):
     result_sorted_text = self.evaluative_descriptive(stat, names)
 
     headers = ["Sorszám", "Algoritmus beállítása", "DB", "%"]
+    column_widths = [0.1, 0.7, 0.1, 0.1]
 
-    # --- Matplotlib tábla rajzolása ---
     fig, ax = plt.subplots(figsize=(10, 0.5 * len(result_sorted_text) + 1))  # dinamikus méret
     ax.axis('off')  # elrejti a tengelyeket
 
@@ -93,7 +93,8 @@ class Statistics:
       cellText=result_sorted_text,
       colLabels=headers,
       cellLoc='center',
-      loc='center'
+      loc='center',
+      colWidths=column_widths
     )
 
     table.auto_set_font_size(False)
