@@ -2,6 +2,9 @@ import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import copy
 from ipywidgets import interact, widgets
+from IPython.display import SVG, display
+import svgwrite
+
 
 import lapszabasz.sorting as ls
 
@@ -188,6 +191,58 @@ class StepByStepAlgorithms:
 
     ax.set_aspect('equal', adjustable='box')
     plt.show()
+
+  def plot_svg(self, algorithm, upload_site, sorting_rectangles, aspect_ratio):
+    pattern, table_number, remnant = self.selection[algorithm](upload_site, sorting_rectangles, aspect_ratio)
+
+    u = 500
+    pattern = sorted(pattern, key=lambda x: x[3])
+
+    max_table_number = max(rec[3] for rec in pattern)
+
+    for table_idx in range(1, max_table_number + 1):
+      svg_filename = f"tabla_{table_idx}.svg"
+      dwg = svgwrite.Drawing(svg_filename, size=(u, u))
+
+      # Sraffozás mintázat
+      pattern_fill = dwg.defs.add(
+        dwg.pattern(id="sraffozas", size=(10, 10), patternUnits="userSpaceOnUse")
+      )
+      pattern_fill.add(dwg.line(start=(0, 0), end=(10, 10), stroke="black", stroke_width=0.5))
+
+      # Háttér (sraffozott)
+      dwg.add(dwg.rect(insert=(0, 0), size=(u, u),
+                       fill="url(#sraffozas)", stroke="black", stroke_width=3))
+
+      # Téglalapok berajzolása
+      for rec in pattern:
+        if rec[3] == table_idx:
+          width = rec[0] * u
+          height = rec[1] * u
+          x_pos = rec[2][0] * u
+          y_pos = rec[2][1] * u
+
+          dwg.add(dwg.rect(insert=(x_pos, y_pos),
+                           size=(width, height),
+                           fill="grey", stroke="black", stroke_width=1))
+
+          if rec[0] > 0.1 and rec[1] > 0.1:
+            text_position_1 = (x_pos + width / 2, y_pos + 15)
+            text_position_2 = (x_pos + 15, y_pos + height / 2)
+
+            dwg.add(dwg.text(round(rec[0], 2),
+                             insert=text_position_1,
+                             text_anchor="middle",
+                             font_size="12px"))
+
+            dwg.add(dwg.text(round(rec[1], 2),
+                             insert=text_position_2,
+                             text_anchor="middle",
+                             font_size="12px",
+                             transform=f"rotate(270, {text_position_2[0]}, {text_position_2[1]})"))
+
+      dwg.save()
+      display(SVG(svg_filename))
 
   #Vázlatosan ábrázolja vegyes step by step algortimus lépésenként
   def mix_step_plot(self, upload_site, sorting_rectangles):
