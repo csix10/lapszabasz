@@ -1,5 +1,3 @@
-
-
 class SortingByRectangles:
   def __init__(self, rectangles):
     self.rectangles = rectangles
