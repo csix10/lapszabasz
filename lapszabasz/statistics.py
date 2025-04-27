@@ -68,7 +68,7 @@ class Statistics:
         i,
         vocabulary[names[int(row[0])]],
         row[1],
-        row[1]/self.sample_number*100])
+        round(row[1]/self.sample_number*100, 3)])
 
     return result_sorted_text
 
