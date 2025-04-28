@@ -99,7 +99,7 @@ class FitAlgorithms:
         sizes[i] += lane[0][0]
 
     sizes = np.array(sizes)
-    remnant =  np.concatenate((remnant, 1 - sizes))
+    remnant = np.concatenate((remnant, 1 - sizes))
     max_remnant = sorted(remnant, reverse=True)[:3]
 
     return tables, len(tables), max_remnant

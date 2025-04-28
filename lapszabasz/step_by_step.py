@@ -93,11 +93,9 @@ class StepByStepAlgorithms:
 
       sizes, pattern, table_number, rate = self.step_width(sizes, pattern, table_number, i, rec)
 
-    max_remnant = sorted(sizes, key=lambda x: x[0] * x[1], reverse=1)
-    max_remnant_area = [[],[],[]]
-    max_remnant_area[0] = max_remnant[0][0] * max_remnant[0][1]
-    max_remnant_area[1] = max_remnant[1][0] * max_remnant[1][1]
-    max_remnant_area[2] = max_remnant[2][0] * max_remnant[2][1]
+    areas = [s[0] * s[1] for s in sizes]
+    top3 = heapq.nlargest(3, areas)
+    max_remnant_area = top3 + [0] * (3 - len(top3))
 
     return pattern, table_number, max_remnant_area
 
@@ -118,11 +116,9 @@ class StepByStepAlgorithms:
 
       sizes, pattern, table_number, rate = self.step_height(sizes, pattern, table_number, i, rec)
 
-    max_remnant = sorted(sizes, key=lambda x: x[0] * x[1], reverse=1)
-    max_remnant_area = [[],[],[]]
-    max_remnant_area[0] = max_remnant[0][0] * max_remnant[0][1]
-    max_remnant_area[1] = max_remnant[1][0] * max_remnant[1][1]
-    max_remnant_area[2] = max_remnant[2][0] * max_remnant[2][1]
+    areas = [s[0] * s[1] for s in sizes]
+    top3 = heapq.nlargest(3, areas)
+    max_remnant_area = top3 + [0] * (3 - len(top3))
 
     return pattern, table_number, max_remnant_area
 
