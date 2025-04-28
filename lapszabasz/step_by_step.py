@@ -1,6 +1,7 @@
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import copy
+import heapq
 from ipywidgets import interact, widgets
 from IPython.display import SVG, display
 import svgwrite
@@ -127,39 +128,37 @@ class StepByStepAlgorithms:
 
   #Vegyes szabástervet generáló step by step
   def mix(self, upload_site, sorting_rectangles, c):
-    sizes = [[1,1,[0,0],1]]      #[szélesség, magasság, bal alsó csúcs koordinátája, tartalmazó tábla]
+    sizes = [[1, 1, [0, 0], 1]]  # [szélesség, magasság, bal alsó csúcs koordinátája, tartalmazó tábla]
     table_number = 1
     pattern = []
 
     rectangle = self.sorting.sort_c_aspect_ratio(sorting_rectangles, 1, c)
     for rec in rectangle:
-      sizes = self.sorting.step_setting(sizes, upload_site)
+        sizes = self.sorting.step_setting(sizes, upload_site)
 
-      i = 0
-      while (i < len(sizes)) and ((sizes[i][0] < rec[0]) or (sizes[i][1] < rec[1])):
-        i += 1
+        i = 0
+        sizes_len = len(sizes)
+        while i < sizes_len and (sizes[i][0] < rec[0] or sizes[i][1] < rec[1]):
+            i += 1
 
-      sizes_copy = copy.deepcopy(sizes)
-      pattern_copy = copy.deepcopy(pattern)
+        sizes_copy = [s.copy() for s in sizes]
+        pattern_copy = [p.copy() for p in pattern]
 
-      sizes_1, pattern_1, table_number_1, rate_1 = self.step_width(sizes_copy, pattern_copy, table_number, i, rec)
-      sizes_2, pattern_2, table_number_2, rate_2 = self.step_height(sizes, pattern, table_number, i, rec)
+        sizes_1, pattern_1, table_number_1, rate_1 = self.step_width(sizes_copy, pattern_copy, table_number, i, rec)
+        sizes_2, pattern_2, table_number_2, rate_2 = self.step_height(sizes, pattern, table_number, i, rec)
 
-      if rate_1 >= rate_2:
-        sizes = sizes_1
-        pattern = pattern_1
-        table_number = table_number_1
+        if rate_1 >= rate_2:
+            sizes = sizes_1
+            pattern = pattern_1
+            table_number = table_number_1
+        else:
+            sizes = sizes_2
+            pattern = pattern_2
+            table_number = table_number_2
 
-      else:
-        sizes = sizes_2
-        pattern = pattern_2
-        table_number = table_number_2
-
-    max_remnant = sorted(sizes, key=lambda x: x[0] * x[1], reverse=1)
-    max_remnant_area = [[],[],[]]
-    max_remnant_area[0] = max_remnant[0][0] * max_remnant[0][1]
-    max_remnant_area[1] = max_remnant[1][0] * max_remnant[1][1]
-    max_remnant_area[2] = max_remnant[2][0] * max_remnant[2][1]
+    areas = [s[0] * s[1] for s in sizes]
+    top3 = heapq.nlargest(3, areas)
+    max_remnant_area = top3 + [0] * (3 - len(top3))
 
     return pattern, table_number, max_remnant_area
 
