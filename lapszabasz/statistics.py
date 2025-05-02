@@ -80,8 +80,9 @@ class Statistics:
     print(tabulate(result_sorted_text, headers=headers, tablefmt="grid"))
 
   #Létrehoz egy táblázatot képként
-  def table_generator_plt(self, stat, names):
-    result_sorted_text = self.evaluative_descriptive(stat, names)
+  def table_generator_plt(self, stat, names, result_sorted_text):
+    if result_sorted_text == 0:
+      result_sorted_text = self.evaluative_descriptive(stat, names)
 
     headers = ["Sorszám", "Algoritmus beállítása", "DB", "%"]
     column_widths = [0.1, 0.7, 0.1, 0.1]
@@ -125,11 +126,11 @@ class Statistics:
       if np.array_equal(sorted_sample[i,0,1:],sorted_sample[i,1,1:]) == False:
         stat.append(sorted_sample[i,0,0])
 
-      if i % 10 == 0:
+      if i % 100 == 0:
         print(f"{i}. mintát értékelte ki!")
 
     self.table_generator_tab(stat, names)
-    self.table_generator_plt(stat, names)
+    self.table_generator_plt(stat, names, 0)
 
   #Függőleges sávos szab. tervet adó algoritmusokat teszteli
   def vertical_bar(self):
@@ -146,6 +147,7 @@ class Statistics:
         for sett_2 in self.setting_sorting_rem:
           pattern, table, remnant_area = step_by_step.vertical_bar(sett_2, sett_1, 0)
           sample[i,x] = np.array([x, table, -remnant_area[0], -remnant_area[1], -remnant_area[2]])
+
           x += 1
           names.append(sett_1 +"_"+ str(sett_2))
 
@@ -154,8 +156,8 @@ class Statistics:
         sample[i,x] = np.array([x, table, -remnant_area[0], -remnant_area[1], -remnant_area[2]])
         x += 1
         names.append(sett)
-
       sorted_sample[i] = sample[i][np.lexsort((sample[i,:, 4], sample[i,:, 3], sample[i,:, 2], sample[i,:, 1]))]
+
       if np.array_equal(sorted_sample[i,0,1:],sorted_sample[i,1,1:]) == False:
         stat.append(sorted_sample[i,0,0])
 
@@ -163,7 +165,7 @@ class Statistics:
         print(f"{i}. mintát értékelte ki!")
 
     self.table_generator_tab(stat, names)
-    self.table_generator_plt(stat, names)
+    self.table_generator_plt(stat, names, 0)
 
   #Fit algoritmusokat teszteli
   def fit_stat(self):
@@ -190,7 +192,7 @@ class Statistics:
         print(f"{i}. mintát értékelte ki!")
 
     self.table_generator_tab(stat, names)
-    self.table_generator_plt(stat, names)
+    self.table_generator_plt(stat, names, 0)
 
   def all_types(self):
     sorted_sample = np.zeros((self.sample_number, 10, 5))
@@ -214,26 +216,26 @@ class Statistics:
     }
 
     for i in range(0, self.sample_number):
-      rectangles = lr.RandomRectangles.generate_random_size(200, 0, 0.5, 10)
+      rectangles = lr.RandomRectangles.generate_random_size(50, 0, 0.5, 10)
       fit = lf.FitAlgorithms(rectangles)
       step_by_step = lss.StepByStepAlgorithms(rectangles)
       x = 0
 
       for vestset in verstepsett:
-        pattern, table, remnant_area = step_by_step.vertical_bar(vestset[1], vestset[0], 0)
-        sample[i,x] = np.array([x, table, -remnant_area[0], -remnant_area[1], -remnant_area[2]])
+        pattern_1, table_1, remnant_area_1 = step_by_step.vertical_bar(vestset[1], vestset[0], 0)
+        sample[i,x] = np.array([x, table_1, -remnant_area_1[0], -remnant_area_1[1], -remnant_area_1[2]])
         x += 1
         names.append("Függőleges sávos " + vocabulary[vestset])
 
       for fsett in fitsett:
-        pattern, table, remnant_area = fit_selection(fit)[fsett]()
-        sample[i,x] = np.array([x, table, -remnant_area[0], -remnant_area[1], -remnant_area[2]])
+        pattern_2, table_2, remnant_area_2 = fit_selection(fit)[fsett]()
+        sample[i,x] = np.array([x, table_2, -remnant_area_2[0], -remnant_area_2[1], -remnant_area_2[2]])
         x += 1
         names.append(vocabulary[fsett])
-
+      
       for mistset in mixstepsett:
-        pattern, table, remnant_area = step_by_step.vertical_bar(mistset[1], mistset[0], 0)
-        sample[i, x] = np.array([x, table, -remnant_area[0], -remnant_area[1], -remnant_area[2]])
+        pattern_3, table_3, remnant_area_3 = step_by_step.mix(mistset[1], mistset[0], 0)
+        sample[i, x] = np.array([x, table_3, -remnant_area_3[0], -remnant_area_3[1], -remnant_area_3[2]])
         x += 1
         names.append("Kevert " + vocabulary[mistset])
 
@@ -261,4 +263,7 @@ class Statistics:
 
     headers = ["Sorszám", "Algoritmus beállítása", "DB", "%"]
     print(tabulate(result_sorted_text, headers=headers, tablefmt="grid"))
+
+    self.table_generator_plt(stat, names, result_sorted_text)
+
 

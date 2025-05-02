@@ -35,7 +35,7 @@ if __name__=="__main__":
         "A": run_stat_1,
         "B": run_stat_2,
         "C": run_stat_3,
-        "D": run_stat_4,
+        "D": run_stat_4
     }
 
     if inp_1 in algos.keys():
