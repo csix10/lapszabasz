@@ -52,7 +52,8 @@ class FitAlgorithms:
         tables.append(table)
         table=[lane]
     tables.append(table)
-    remnant.append(1-sum+lane[0][0])
+    #remnant.append(1-sum+lane[0][0])
+    remnant.append(1 - sum)
 
     max_remnant = sorted(remnant, reverse=True)[:3]
 

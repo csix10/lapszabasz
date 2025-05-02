@@ -125,7 +125,7 @@ class Statistics:
       if np.array_equal(sorted_sample[i,0,1:],sorted_sample[i,1,1:]) == False:
         stat.append(sorted_sample[i,0,0])
 
-      if i % 100 == 0:
+      if i % 10 == 0:
         print(f"{i}. mintát értékelte ki!")
 
     self.table_generator_tab(stat, names)
@@ -191,3 +191,74 @@ class Statistics:
 
     self.table_generator_tab(stat, names)
     self.table_generator_plt(stat, names)
+
+  def all_types(self):
+    sorted_sample = np.zeros((self.sample_number, 10, 5))
+    sample = np.zeros((self.sample_number, 10, 5))
+    stat = []
+    names = []
+    verstepsett = (("latitude", 1), ("latitude", 21), ("latitude", 2))
+    fitsett = ("BFD", "FFD")
+    mixstepsett = (("latitude", 1), ("area", 1), ("height", 3), ("height", 1), ("area", 3))
+
+    vocabulary = {
+      ("latitude", 1): "SbS: Szab. jegy.: Szélesség, Maradék: Terület",
+      ("latitude", 2): "SbS: Szab. jegy.: Szélesség, Maradék: Tábla",
+      ("latitude", 21): "SbS: Szab. jegy.: Szélesség, Maradék: Tábla és terület",
+      ("height", 1): "SbS: Szab. jegy.: Magasság, Maradék: Terület",
+      ("height", 3): "SbS: Szab. jegy.: Magasság, Maradék: Szélesség",
+      ("area", 1): "SbS: Szab. jegy.: Terület, Maradék: Terület",
+      ("area", 3): "SbS: Szab. jegy.: Terület, Maradék: Szélesség",
+      "FFD": "Függőleges sávos Bin Packing: FFDL",
+      "BFD": "Függőleges sávos Bin Packing: BFDL"
+    }
+
+    for i in range(0, self.sample_number):
+      rectangles = lr.RandomRectangles.generate_random_size(200, 0, 0.5, 10)
+      fit = lf.FitAlgorithms(rectangles)
+      step_by_step = lss.StepByStepAlgorithms(rectangles)
+      x = 0
+
+      for vestset in verstepsett:
+        pattern, table, remnant_area = step_by_step.vertical_bar(vestset[1], vestset[0], 0)
+        sample[i,x] = np.array([x, table, -remnant_area[0], -remnant_area[1], -remnant_area[2]])
+        x += 1
+        names.append("Függőleges sávos " + vocabulary[vestset])
+
+      for fsett in fitsett:
+        pattern, table, remnant_area = fit_selection(fit)[fsett]()
+        sample[i,x] = np.array([x, table, -remnant_area[0], -remnant_area[1], -remnant_area[2]])
+        x += 1
+        names.append(vocabulary[fsett])
+
+      for mistset in mixstepsett:
+        pattern, table, remnant_area = step_by_step.vertical_bar(mistset[1], mistset[0], 0)
+        sample[i, x] = np.array([x, table, -remnant_area[0], -remnant_area[1], -remnant_area[2]])
+        x += 1
+        names.append("Kevert " + vocabulary[mistset])
+
+      sorted_sample[i] = sample[i][np.lexsort((sample[i, :, 4], sample[i, :, 3], sample[i, :, 2], sample[i, :, 1]))]
+      if np.array_equal(sorted_sample[i, 0, 1:], sorted_sample[i, 1, 1:]) == False:
+        stat.append(sorted_sample[i, 0, 0])
+
+      if i % 100 == 0:
+        print(f"{i}. mintát értékelte ki!")
+
+    counter = Counter(stat)
+    result = list(map(list, counter.items()))
+    result_sorted = sorted(result, key=lambda x: x[1], reverse=True)
+
+    i = 0
+    result_sorted_text = []
+
+    for row in result_sorted:
+      i += 1
+      result_sorted_text.append([
+        i,
+        names[int(row[0])],
+        row[1],
+        round(row[1] / self.sample_number * 100, 3)])
+
+    headers = ["Sorszám", "Algoritmus beállítása", "DB", "%"]
+    print(tabulate(result_sorted_text, headers=headers, tablefmt="grid"))
+
