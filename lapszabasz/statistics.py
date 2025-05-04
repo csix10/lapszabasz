@@ -64,11 +64,20 @@ class Statistics:
 
     for row in result_sorted:
       i+=1
-      result_sorted_text.append([
-        i,
-        vocabulary[names[int(row[0])]],
-        row[1],
-        round(row[1]/self.sample_number*100, 3)])
+
+      if names[int(row[0])] in vocabulary:
+        result_sorted_text.append([
+          i,
+          vocabulary[names[int(row[0])]],
+          row[1],
+          round(row[1]/self.sample_number*100, 3)])
+
+      else:
+        result_sorted_text.append([
+          i,
+          names[int(row[0])],
+          row[1],
+          round(row[1] / self.sample_number * 100, 3)])
 
     return result_sorted_text
 
@@ -266,4 +275,43 @@ class Statistics:
 
     self.table_generator_plt(stat, names, result_sorted_text)
 
+  def mix_c_testing(self):
+    vocabulary_1 = {
+      "latitude": "SbS: Szab. jegy.: Szélesség",
+      "height": "SbS: Szab. jegy.: Magasság",
+      "area": "SbS: Szab. jegy.: Terület",
+      "aspect_ratio": "SbS: Szab. jegy.: Old. arány"
+    }
+    vocabulary_2 = {
+      1: "Maradék: Terület",
+      2: "Maradék: Tábla",
+      21: "Maradék: Tábla és terület",
+      3: "Maradék: Szélesség"
+    }
 
+    sorted_sample = np.zeros((self.sample_number, 176, 5))
+    sample = np.zeros((self.sample_number, 176, 5))
+    stat = []
+    names = []
+    for i in range(0, self.sample_number):
+      rectangles = lr.RandomRectangles.generate_random_size(40, 0, 0.5, 10)
+      step_by_step = lss.StepByStepAlgorithms(rectangles)
+      x = 0
+      for sett_1 in self.setting_sorting_rec:
+        for sett_2 in self.setting_sorting_rem:
+          for c_1 in range(11):
+            c = c_1 * 0.1
+            pattern, table, remnant_area = step_by_step.mix(sett_2, sett_1, c)
+            sample[i,x] = np.array([x, table, -remnant_area[0], -remnant_area[1], -remnant_area[2]])
+            x += 1
+            names.append(vocabulary_1[sett_1]+" "+vocabulary_2[sett_2]+"c: "+str(c))
+
+      sorted_sample[i] = sample[i][np.lexsort((sample[i,:, 4], sample[i,:, 3], sample[i,:, 2], sample[i,:, 1]))]
+      if np.array_equal(sorted_sample[i,0,1:],sorted_sample[i,1,1:]) == False:
+        stat.append(sorted_sample[i,0,0])
+
+      if i % 100 == 0:
+        print(f"{i}. mintát értékelte ki!")
+
+    self.table_generator_tab(stat, names)
+    self.table_generator_plt(stat, names, 0)
