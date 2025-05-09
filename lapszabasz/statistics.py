@@ -240,8 +240,8 @@ class Statistics:
         self.table_generator_plt(stat, names)
 
     def mix_c_testing(self):
-        sorted_sample = np.zeros((self.sample_number, 176, 5))
-        sample = np.zeros((self.sample_number, 176, 5))
+        sorted_sample = np.zeros((self.sample_number, 160, 5))
+        sample = np.zeros((self.sample_number, 160, 5))
         stat = []
         names = []
         for i in range(0, self.sample_number):
@@ -250,7 +250,7 @@ class Statistics:
             x = 0
             for sett_1 in self.setting_sorting_rec:
                 for sett_2 in self.setting_sorting_rem:
-                    for c_1 in range(11):
+                    for c_1 in range(10):
                         c = c_1 * 0.1
                         pattern, table, remnant_area = step_by_step.mix(sett_2, sett_1, c)
                         sample[i, x] = np.array([x, table, -remnant_area[0], -remnant_area[1], -remnant_area[2]])

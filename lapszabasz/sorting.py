@@ -28,7 +28,6 @@ class SortingByRectangles:
     return sorted(self.rectangles, key=lambda x: min(x[0], x[1]) / max(x[0], x[1]), reverse=monotony)
 
   def sort_c_aspect_ratio(self, algorithm, monotony, c):
-    #rectangles = getattr(self, algorithm)(monotony)
     rectangles = self.selection[algorithm](monotony)
     rectangles_below_c = [rect for rect in rectangles if min(rect[0], rect[1]) / max(rect[0], rect[1]) < c]
     rectangles_above_c = [rect for rect in rectangles if min(rect[0], rect[1]) / max(rect[0], rect[1]) >= c]
