@@ -327,7 +327,9 @@ class StepByStepAlgorithms:
                 ("Legkisebb szélességű darabra (3)", 3),
                 ("Nincs rendezés (0)", 0)
             ],
-            description='Maradék beállítása:'
+            description='Maradék beállítása:',
+            layout=widgets.Layout(width='400px'),
+            style={'description_width': 'initial'}
         )
         upload_site_rectangel = widgets.Dropdown(
             options=[
@@ -336,14 +338,18 @@ class StepByStepAlgorithms:
                 ("Terület szerint (area)", "area"),
                 ("Oldal arány szerint: (aspect_ratio)", "aspect_ratio")
             ],
-            description='Szabásjegyzék rendezése:'
+            description='Szabásjegyzék rendezése:',
+            layout = widgets.Layout(width='400px'),
+            style = {'description_width': 'initial'}
         )
         aspect_ratio = widgets.FloatSlider(
-            value=0.5,
+            value=0,
             min=0,
             max=1,
             step=0.1,
-            description='Oldalarány súlya (c):'
+            description='Oldalarány súlya (c):',
+            layout=widgets.Layout(width='400px'),
+            style={'description_width': 'initial'}
         )
 
         interact(
