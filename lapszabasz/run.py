@@ -20,21 +20,27 @@ def run_stat_2(n):
     stat = ls.Statistics(int(n))
     stat.fit_stat()
 
+
 def run_stat_3(n):
     stat = ls.Statistics(int(n))
     stat.vertical_bar()
+
 
 def run_stat_4(n):
     stat = ls.Statistics(int(n))
     stat.all_types()
 
+
 def run_stat_5(n):
     stat = ls.Statistics(int(n))
     stat.mix_c_testing()
 
-if __name__=="__main__":
-    inp_1 = input("Milyen tesztet szeretnél futtatni?\nA: Step by Step algortimus családon\nB: Fit algoritmus családon\nC: Függőleges sávos algoritmusokon\nD: Kevert és sávos összehasonlítás\nE: c test\n" )
-    inp_2 =input("Mekkora mintán? \n")
+
+if __name__ == "__main__":
+    inp_1 = input(
+        "Milyen tesztet szeretnél futtatni?\nA: Step by Step algortimus családon\nB: Fit algoritmus családon\nC: "
+        "Függőleges sávos algoritmusokon\nD: Kevert és sávos összehasonlítás\nE: c test\n")
+    inp_2 = input("Mekkora mintán? \n")
     algos = {
         "A": run_stat_1,
         "B": run_stat_2,

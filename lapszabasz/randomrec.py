@@ -9,7 +9,7 @@ class RandomRectangles:
     # - size_number darab különböző méretű téglalap legyen
     # - szélességi és magassági mérete min_size és max_size közötti racionális szám
     # - maximum max_count darab azonos méretű téglalap lehet
-    def generate_random_size(size_number, min_size, max_size, max_count):
+    def generate_random_size(size_number: int, min_size, max_size, max_count):
         sizes = np.random.uniform(min_size, max_size, size=(size_number, 2))
         counts = np.random.randint(0, max_count + 1, size=size_number)
 
