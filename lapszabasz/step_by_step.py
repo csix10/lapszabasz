@@ -338,11 +338,18 @@ class StepByStepAlgorithms:
             ],
             description='Szabásjegyzék rendezése:'
         )
+        aspect_ratio = widgets.FloatSlider(
+            value=0.5,
+            min=0,
+            max=1,
+            step=0.1,
+            description='Oldalarány súlya (c):'
+        )
 
         interact(
             self.plot,
             algorithm=upload_site_algorthm,
             upload_site=upload_site_stay,
             sorting_rectangles=upload_site_rectangel,
-            aspect_ratio=(0, 1, 0.1)
+            aspect_ratio=aspect_ratio
         )
