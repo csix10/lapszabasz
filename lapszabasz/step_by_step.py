@@ -316,7 +316,9 @@ class StepByStepAlgorithms:
                 ("Vízszintes sávos (horizontal_bar)", "horizontal_bar"),
                 ("Kevert (mix)", "mix")
             ],
-            description='Szabásterv típusa:'
+            description='Szabásterv típusa:',
+            layout=widgets.Layout(width='400px'),
+            style={'description_width': 'initial'}
         )
 
         upload_site_stay = widgets.Dropdown(
