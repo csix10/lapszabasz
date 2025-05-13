@@ -16,7 +16,7 @@ class RandomRectangles:
         expanded_sizes = np.repeat(sizes, counts, axis=0)
         return expanded_sizes
 
-    #Ábrázolja téglalapok egy halmazát
+    #Ábrázolja téglalapok egy halmazát egyszerűen
     def plot_rectangles(rectangles):
         fig, ax = plt.subplots(figsize=(10, 5))
 
@@ -35,7 +35,7 @@ class RandomRectangles:
         ax.set_aspect('equal', adjustable='box')
         plt.show()
 
-    #Ábrázolja téglalapok egy halmazát
+    #Ábrázolja téglalapok egy halmazát svg-ben
     def plot_rectangles_svg(rectangles):
         filename = "teglalapok.svg"
         u=500

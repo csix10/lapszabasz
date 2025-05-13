@@ -194,6 +194,7 @@ class Statistics:
         self.table_generator_tab(stat, names)
         self.table_generator_plt(stat, names)
 
+    #Minden fajta algoritmusból a legjobbakat teszteli
     def all_types(self):
         sorted_sample = np.zeros((self.sample_number, 10, 5))
         sample = np.zeros((self.sample_number, 10, 5))
@@ -239,6 +240,7 @@ class Statistics:
         self.table_generator_tab(stat, names)
         self.table_generator_plt(stat, names)
 
+    #Kevert algoritmusok c értékeit teszteli
     def mix_c_testing(self):
         sorted_sample = np.zeros((self.sample_number, 160, 5))
         sample = np.zeros((self.sample_number, 160, 5))

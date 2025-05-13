@@ -72,11 +72,6 @@ class StepByStepAlgorithms:
         return sizes, pattern, table_number, rate
 
     # Függőleges sávos szabástervet generáló step by step
-    # - upload=1: a legkisebb területűre darabra helyezi le a szabandó téglalapot
-    # - upload=2: a legelső táblára amire még ráfér helyezi le a téglalapot
-    # - upload=21: a legelső táblán amire ráfér a legkisebb területű darabra helyezi le
-    # - upload=3: a legkissebb szélességű darabra helyezi el a szabandó télalapot
-    # - upload=0: nincs rendezés az üres darabok között
     def vertical_bar(self, upload_site, sorting_rectangles, c):
         sizes = [[1, 1, [0, 0], 1]]  # [szélesség, magasság, bal alsó csúcs koordinátája, tartalmazó tábla]
         table_number = 1
@@ -99,7 +94,6 @@ class StepByStepAlgorithms:
         return pattern, table_number, max_remnant_area
 
     # Vízszintes sávos szabástervet generáló step by step
-    # Beállítások ugyan az mint elöbb
     def horizontal_bar(self, upload_site, sorting_rectangles, c):
         sizes = [[1, 1, [0, 0], 1]]  # [szélesség, magasság, bal alsó csúcs koordinátája, tartalmazó tábla]
         table_number = 1
@@ -189,6 +183,7 @@ class StepByStepAlgorithms:
         ax.set_aspect('equal', adjustable='box')
         plt.show()
 
+    #svg-ben ábárzolja a szabástervet
     def plot_svg(self, algorithm, upload_site, sorting_rectangles, aspect_ratio):
         pattern, table_number, remnant = self.selection[algorithm](upload_site, sorting_rectangles, aspect_ratio)
 
