@@ -5,10 +5,10 @@ import svgwrite
 from IPython.display import SVG, display
 
 class RandomRectangles:
-    #Létrehoz random téglalapok egy np listáját úgy hogy:
-    # - size_number darab különböző méretű téglalap legyen
-    # - szélességi és magassági mérete min_size és max_size közötti racionális szám
-    # - maximum max_count darab azonos méretű téglalap lehet
+    #Letrehoz random teglalapok egy np listajat ugy hogy:
+    # - size_number darab kulonbozo meretu teglalap legyen
+    # - szelessegi es magassagi merete min_size es max_size kozotti racionalis szam
+    # - maximum max_count darab azonos meretu teglalap lehet
     def generate_random_size(size_number: int, min_size, max_size, max_count):
         sizes = np.random.uniform(min_size, max_size, size=(size_number, 2))
         counts = np.random.randint(0, max_count + 1, size=size_number)
@@ -16,7 +16,7 @@ class RandomRectangles:
         expanded_sizes = np.repeat(sizes, counts, axis=0)
         return expanded_sizes
 
-    #Ábrázolja téglalapok egy halmazát egyszerűen
+    #Abrazolja teglalapok egy halmazat egyszeruen
     def plot_rectangles(rectangles):
         fig, ax = plt.subplots(figsize=(10, 5))
 
@@ -27,15 +27,13 @@ class RandomRectangles:
             ax.add_patch(rectangle)
             i = i+width+0.1
 
-        # Beállítjuk a tengelyek határait
         ax.set_xlim(0, i + 1)
         ax.set_ylim(0, 1)
 
-        # Megfelelő arány tartása
         ax.set_aspect('equal', adjustable='box')
         plt.show()
 
-    #Ábrázolja téglalapok egy halmazát svg-ben
+    #Abrazolja teglalapok egy halmazat svg-ben
     def plot_rectangles_svg(rectangles):
         filename = "teglalapok.svg"
         u=500
@@ -60,8 +58,5 @@ class RandomRectangles:
 
             i = i+width+0.1*u
 
-        # SVG mentése
         dwg.save()
-
-        # SVG megjelenítése Colabban
         display(SVG(filename))
