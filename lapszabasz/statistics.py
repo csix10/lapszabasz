@@ -50,7 +50,7 @@ class Statistics:
         self.setting_sorting_rem = (1, 2, 21, 3)
         self.setting_fit = ("NFD", "FFD", "BFD")
 
-    # Kiértékeli a statisztikai eredményeket és előkészíti a táblázat ábrázolását
+    # Kiertekeli a statisztikai eredmenyeket és elokesziti a tablazat abrazolasat
     def evaluative_descriptive(self, stat, names):
         counter = Counter(stat)
         result = list(map(list, counter.items()))
@@ -69,22 +69,22 @@ class Statistics:
 
         return result_sorted_text
 
-    # Létrehoz egy terminálos táblázatot
+    # Letrehoz egy terminalos tablazatot
     def table_generator_tab(self, stat, names):
         result_sorted_text = self.evaluative_descriptive(stat, names)
 
         headers = ["Sorszám", "Algoritmus beállítása", "DB", "%"]
         print(tabulate(result_sorted_text, headers=headers, tablefmt="grid"))
 
-    # Létrehoz egy táblázatot képként
+    # Letrehoz egy tablazatot kepkent
     def table_generator_plt(self, stat, names):
         result_sorted_text = self.evaluative_descriptive(stat, names)
 
         headers = ["Sorszám", "Algoritmus beállítása", "DB", "%"]
         column_widths = [0.1, 0.7, 0.1, 0.1]
 
-        fig, ax = plt.subplots(figsize=(10, 0.5 * len(result_sorted_text) + 1))  # dinamikus méret
-        ax.axis('off')  # elrejti a tengelyeket
+        fig, ax = plt.subplots(figsize=(10, 0.5 * len(result_sorted_text) + 1))
+        ax.axis('off')
 
         table = ax.table(
             cellText=result_sorted_text,
@@ -96,12 +96,12 @@ class Statistics:
 
         table.auto_set_font_size(False)
         table.set_fontsize(10)
-        table.scale(1, 1.5)  # méretarány a cellák között
+        table.scale(1, 1.5)
 
         plt.title("Algoritmus statisztika", fontsize=14, pad=20)
         plt.show()
 
-    # Step by Step algoritmusok különboző beállításait teszteli
+    # Step by Step algoritmusok kulonbozo beallitasait teszteli
     def step_by_step_stat(self, algorithm):
         sorted_sample = np.zeros((self.sample_number, 16, 5))
         sample = np.zeros((self.sample_number, 16, 5))
@@ -130,7 +130,7 @@ class Statistics:
         self.table_generator_tab(stat, names)
         self.table_generator_plt(stat, names)
 
-    # Függőleges sávos szab. tervet adó algoritmusokat teszteli
+    # Fuggoleges savos szab. tervet ado algoritmusokat teszteli
     def vertical_bar(self):
         sorted_sample = np.zeros((self.sample_number, 19, 5))
         sample = np.zeros((self.sample_number, 19, 5))
@@ -194,7 +194,7 @@ class Statistics:
         self.table_generator_tab(stat, names)
         self.table_generator_plt(stat, names)
 
-    #Minden fajta algoritmusból a legjobbakat teszteli
+    #Minden fajta algoritmusbol a legjobbakat teszteli
     def all_types(self):
         sorted_sample = np.zeros((self.sample_number, 10, 5))
         sample = np.zeros((self.sample_number, 10, 5))
@@ -240,7 +240,7 @@ class Statistics:
         self.table_generator_tab(stat, names)
         self.table_generator_plt(stat, names)
 
-    #Kevert algoritmusok c értékeit teszteli
+    #Kevert algoritmusok c ertekeit teszteli
     def mix_c_testing(self):
         sorted_sample = np.zeros((self.sample_number, 160, 5))
         sample = np.zeros((self.sample_number, 160, 5))

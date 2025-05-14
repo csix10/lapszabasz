@@ -12,7 +12,7 @@ class FitAlgorithms:
     def __init__(self, rectangles):
         self.sorting = ls.SortingByRectangles(rectangles)
 
-    # Sávokba rendezi téglalapok egy halmazát NFD szerint.
+    # Savokba rendezi teglalapok egy halmazat NFD szerint.
     def NFD(self):
         sort_rec = self.sorting.latitude(1)
         lanes = []
@@ -32,7 +32,7 @@ class FitAlgorithms:
         lanes.append(lane)
         return lanes, remnant
 
-    # Táblákba rendezi sávok egy halmazát NFD szerint.
+    # Tablakba rendezi savok egy halmazat NFD szerint.
     def NFD_lanes(self):
         lanes, remnant = self.NFD()
         tables = []
@@ -55,7 +55,7 @@ class FitAlgorithms:
 
         return tables, len(tables), max_remnant
 
-    # Sávokba rendezi téglalapok egy halmazát FFD szerint.
+    # Savokba rendezi teglalapok egy halmazat FFD szerint.
     def FFD(self):
         sort_rec = self.sorting.latitude(1)
         lanes = []
@@ -77,7 +77,7 @@ class FitAlgorithms:
 
         return lanes, remnant
 
-    # Táblákba rendezi sávok egy halmazát FFD szerint.
+    # Tablakba rendezi savok egy halmazat FFD szerint.
     def FFD_lanes(self):
         lanes, remnant = self.FFD()
         sizes = []
@@ -100,7 +100,7 @@ class FitAlgorithms:
 
         return tables, len(tables), max_remnant
 
-    # Sávokba rendezi téglalapok egy halmazát BFD szerint.
+    # Savokba rendezi teglalapok egy halmazat BFD szerint.
     def BFD(self):
         sort_rec = self.sorting.latitude(1)
         lanes = []
@@ -127,7 +127,7 @@ class FitAlgorithms:
 
         return lanes, remnant
 
-    # Táblákba rendezi sávok egy halmazát BFD szerint.
+    # Tablakba rendezi savok egy halmazat BFD szerint.
     def BFD_lanes(self):
         lanes, remnant = self.BFD()
         lanes = sorted(lanes, key=lambda x: x[0][0], reverse=True)
@@ -156,7 +156,7 @@ class FitAlgorithms:
 
         return tables, len(tables), max_remnant
 
-    # Ábrázolja a Fit algoritmusok tábláit egyszerűen
+    # Abrazolja a Fit algoritmusok tablait egyszeruen
     def plot(self, algorithm):
         algorithm = algorithm + "_lanes"
         tables, tables_number, remnant = getattr(self, algorithm)()
@@ -189,7 +189,7 @@ class FitAlgorithms:
         ax.set_aspect('equal', adjustable='box')
         plt.show()
 
-    # Ábrázolja a Fit algoritmusok tábláit svg-ben
+    # Abrazolja a Fit algoritmusok tablait svg-ben
     def plot_svg(self, algorithm):
         algorithm = algorithm + "_lanes"
         tables, tables_number, remnant = getattr(self, algorithm)()
@@ -234,7 +234,7 @@ class FitAlgorithms:
             # SVG megjelenítése Colabban
             display(SVG(svg_filename))
 
-    #Interaktív ábrát hoz létre
+    #Interaktiv abrat hoz letre
     def interactive_figure(self):
         upload_site_dropdown = widgets.Dropdown(
             options=[

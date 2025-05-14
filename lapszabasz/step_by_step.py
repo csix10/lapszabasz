@@ -19,7 +19,7 @@ class StepByStepAlgorithms:
             "mix": self.mix,
         }
 
-    # Egy lépésben elvégzi a vágást szélesség szerint
+    # Egy lepesben elvegzi a vagast szelesseg szerint
     def step_width(self, sizes, pattern, table_number, i, rec):
         if i >= len(sizes):
             table_number += 1
@@ -45,7 +45,7 @@ class StepByStepAlgorithms:
 
         return sizes, pattern, table_number, rate
 
-    # Egy lépésben elvégzi a vágást magasság szerint
+    # Egy lepesben elvegzi a vagast magassag szerint
     def step_height(self, sizes, pattern, table_number, i, rec):
         if i >= len(sizes):
             table_number += 1
@@ -71,7 +71,7 @@ class StepByStepAlgorithms:
 
         return sizes, pattern, table_number, rate
 
-    # Függőleges sávos szabástervet generáló step by step
+    # Fuggoleges savos szabastervet generalo step by step
     def vertical_bar(self, upload_site, sorting_rectangles, c):
         sizes = [[1, 1, [0, 0], 1]]  # [szélesség, magasság, bal alsó csúcs koordinátája, tartalmazó tábla]
         table_number = 1
@@ -93,9 +93,9 @@ class StepByStepAlgorithms:
 
         return pattern, table_number, max_remnant_area
 
-    # Vízszintes sávos szabástervet generáló step by step
+    # Vizszintes savos szabastervet generalo step by step
     def horizontal_bar(self, upload_site, sorting_rectangles, c):
-        sizes = [[1, 1, [0, 0], 1]]  # [szélesség, magasság, bal alsó csúcs koordinátája, tartalmazó tábla]
+        sizes = [[1, 1, [0, 0], 1]]  # [szelesseg, magasság, bal also csucs koordinataja, tartalmazo tabla]
         table_number = 1
         pattern = []
 
@@ -115,9 +115,9 @@ class StepByStepAlgorithms:
 
         return pattern, table_number, max_remnant_area
 
-    # Vegyes szabástervet generáló step by step
+    # Vegyes szabastervet generalo step by step
     def mix(self, upload_site, sorting_rectangles, c):
-        sizes = [[1, 1, [0, 0], 1]]  # [szélesség, magasság, bal alsó csúcs koordinátája, tartalmazó tábla]
+        sizes = [[1, 1, [0, 0], 1]]  # [szelesseg, magassag, bal also csucs koordinataja, tartalmazo tabla]
         table_number = 1
         pattern = []
 
@@ -151,7 +151,7 @@ class StepByStepAlgorithms:
 
         return pattern, table_number, max_remnant_area
 
-    # Vázlatosan ábrázolja step by step által létre hozott szabástervet
+    # Vazlatosan abrazolja step by step altal letre hozott szabastervet
     def plot(self, algorithm, upload_site, sorting_rectangles, aspect_ratio):
         pattern, table_number, remnant = self.selection[algorithm](upload_site, sorting_rectangles, aspect_ratio)
         fig, ax = plt.subplots(figsize=(10, 5))
@@ -183,7 +183,7 @@ class StepByStepAlgorithms:
         ax.set_aspect('equal', adjustable='box')
         plt.show()
 
-    #svg-ben ábárzolja a szabástervet
+    #svg-ben abarzolja a szabastervet
     def plot_svg(self, algorithm, upload_site, sorting_rectangles, aspect_ratio):
         pattern, table_number, remnant = self.selection[algorithm](upload_site, sorting_rectangles, aspect_ratio)
 
@@ -196,17 +196,14 @@ class StepByStepAlgorithms:
             svg_filename = f"tabla_{table_idx}.svg"
             dwg = svgwrite.Drawing(svg_filename, size=(u, u))
 
-            # Sraffozás mintázat
             pattern_fill = dwg.defs.add(
                 dwg.pattern(id="sraffozas", size=(10, 10), patternUnits="userSpaceOnUse")
             )
             pattern_fill.add(dwg.line(start=(0, 0), end=(10, 10), stroke="black", stroke_width=0.5))
 
-            # Háttér (sraffozott)
             dwg.add(dwg.rect(insert=(0, 0), size=(u, u),
                              fill="url(#sraffozas)", stroke="black", stroke_width=3))
 
-            # Téglalapok berajzolása
             for rec in pattern:
                 if rec[3] == table_idx:
                     width = rec[0] * u
@@ -236,9 +233,9 @@ class StepByStepAlgorithms:
             dwg.save()
             display(SVG(svg_filename))
 
-    # Vázlatosan ábrázolja vegyes step by step algortimus lépésenként
+    # Vazlatosan abrazolja vegyes step by step algortimus lepesenkent
     def mix_step_plot(self, upload_site, sorting_rectangles):
-        sizes = [[1, 1, [0, 0], 1]]  # [szélesség, magasság, bal alsó csúcs koordinátája, tartalmazó tábla]
+        sizes = [[1, 1, [0, 0], 1]]
         table_number = 1
         pattern = []
 
@@ -303,7 +300,7 @@ class StepByStepAlgorithms:
             ax.set_aspect('equal', adjustable='box')
             plt.show()
 
-    # Step by step algoritmushoz készít interaktav ábrát amin az összed beállítás megadható
+    # Step by step algoritmushoz keszit interaktav abrat amin az osszed beallitas megadhato
     def interactive_figure(self):
         upload_site_algorthm = widgets.Dropdown(
             options=[
